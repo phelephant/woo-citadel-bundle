@@ -1,0 +1,48 @@
+diff -r -U3 admin/class-woo-checkout-for-digital-goods-admin.php admin/class-woo-checkout-for-digital-goods-admin.php
+--- orig/admin/class-woo-checkout-for-digital-goods-admin.php	2019-09-20 12:03:48.000000000 +0000
++++ updt/admin/class-woo-checkout-for-digital-goods-admin.php	2019-09-02 10:13:42.000000000 +0000
+@@ -95,6 +95,8 @@
+         $woo_checkout_field_array_serilize = array();
+         $woo_checkout_field_array_serilize = maybe_unserialize($woo_checkout_field_array);
+ 
++        $billing_first_name_selected = '';
++        $billing_last_name_selected = '';
+         $billing_company_selected = '';
+         $billing_address_1_selected = '';
+         $billing_address_2_selected = '';
+@@ -107,6 +109,14 @@
+ 
+         if (isset($woo_checkout_field_array_serilize) && !empty($woo_checkout_field_array_serilize)) {
+ 
++            if (in_array('billing_first_name', $woo_checkout_field_array_serilize)) {
++                $billing_first_name_selected = 'checked';
++            }
++
++            if (in_array('billing_last_name', $woo_checkout_field_array_serilize)) {
++                $billing_last_name_selected = 'checked';
++            }
++
+             if (in_array('billing_company', $woo_checkout_field_array_serilize)) {
+                 $billing_company_selected = 'checked';
+             }
+@@ -151,6 +161,8 @@
+             <form method="post" action="">
+                 <?php wp_nonce_field(basename(__FILE__), 'woo_checkout_digital_goods'); ?>
+                 <label><input type="checkbox" class="woo_chk" id="selectall"/><?php esc_html_e('Select All','woo-checkout-for-digital-goods');?></label>
++                <label><input type="checkbox" <?php echo esc_attr($billing_first_name_selected); ?> class="woo_chk" value="billing_first_name" name="woo_chk_checkout_field[]"> <?php esc_html_e('First Name','woo-checkout-for-digital-goods');?> <br/></label>
++                <label><input type="checkbox" <?php echo esc_attr($billing_last_name_selected); ?> class="woo_chk" value="billing_last_name" name="woo_chk_checkout_field[]"> <?php esc_html_e('Last Name','woo-checkout-for-digital-goods');?> <br/></label>
+                 <label><input type="checkbox" <?php echo esc_attr($billing_company_selected); ?> class="woo_chk" value="billing_company" name="woo_chk_checkout_field[]"> <?php esc_html_e('Company Name','woo-checkout-for-digital-goods');?> <br/></label>
+                 <label><input type="checkbox" <?php echo esc_attr($billing_address_1_selected); ?> class="woo_chk" value="billing_address_1" name="woo_chk_checkout_field[]"> <?php esc_html_e('Billing Address one','woo-checkout-for-digital-goods');?> <br/></label>
+                 <label><input type="checkbox" <?php echo esc_attr($billing_address_2_selected); ?> class="woo_chk" value="billing_address_2" name="woo_chk_checkout_field[]"> <?php esc_html_e('Billing Address two','woo-checkout-for-digital-goods');?> <br/></label>
+diff -r -U3 public/class-woo-checkout-for-digital-goods-public.php public/class-woo-checkout-for-digital-goods-public.php
+--- orig/public/class-woo-checkout-for-digital-goods-public.php	2019-09-20 12:03:48.000000000 +0000
++++ updt/public/class-woo-checkout-for-digital-goods-public.php	2019-09-22 14:32:41.517253514 +0000
+@@ -99,6 +99,8 @@
+                 }
+             } else {
+ 
++                unset($fields['billing']['billing_first_name']);
++                unset($fields['billing']['billing_last_name']);
+                 unset($fields['billing']['billing_company']);
+                 unset($fields['billing']['billing_address_1']);
+                 unset($fields['billing']['billing_address_2']);
