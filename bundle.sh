@@ -12,8 +12,8 @@ function download_file()
     return $?
 }
 
-VER_WP=5.2.3
-VER_WOO=3.7.0
+VER_WP=5.2.4
+VER_WOO=3.8.0
 VER_SF=2.5.3
 
 VER_WOO_CITADEL=1.3
